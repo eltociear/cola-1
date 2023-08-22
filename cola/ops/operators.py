@@ -297,13 +297,13 @@ class Diagonal(LinearOperator):
         """
     def __init__(self, diag):
         self.diag = diag
-        super().__init__(dtype=diag.dtype, shape=(len(diag), ) * 2)
+        super().__init__(dtype=diag.dtype, shape=(*diag.shape, diag.shape[-1]))
 
     def _matmat(self, X: Array) -> Array:
-        return self.diag[:, None] * X
+        return self.diag[..., None] * X
 
     def _rmatmat(self, X: Array) -> Array:
-        return self.diag[None, :] * X
+        return self.diag[..., None, :] * X
 
     def to_dense(self):
         return self.xnp.diag(self.diag)

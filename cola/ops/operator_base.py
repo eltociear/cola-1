@@ -131,7 +131,7 @@ class LinearOperator(metaclass=AutoRegisteringPyTree):
         return flatten_function(self)
 
     def __matmul__(self, X: Array) -> Array:
-        assert X.shape[0] == self.shape[-1], f"dimension mismatch {self.shape} vs {X.shape}"
+        assert X.shape[-2] == self.shape[-1], f"dimension mismatch {self.shape} vs {X.shape}"
         if isinstance(X, LinearOperator):
             return cola.fns.dot(self, X)
         elif len(X.shape) == 1:

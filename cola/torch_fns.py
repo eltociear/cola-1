@@ -43,7 +43,6 @@ eigh = torch.linalg.eigh
 solve = torch.linalg.solve
 copy = torch.clone
 svd = torch.linalg.svd
-diag = torch.diag
 zeros_like = torch.zeros_like
 cholesky = torch.linalg.cholesky
 min = torch.min
@@ -76,6 +75,11 @@ moveaxis = torch.moveaxis
 #     w = w.to(dtype=a.dtype) # by default casts to float64 which we don't want
 #     v = v.to(dtype=a.dtype)
 #     return w,v
+
+
+def diag(array):
+    out = torch.diag_embed(array, dim1=-2, dim2=-1)
+    return out
 
 
 def lu(a):

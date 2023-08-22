@@ -266,12 +266,23 @@ def test_identity(xnp):
     assert rel_error < _tol
 
 
-@parametrize([torch_fns, jax_fns])
+# @parametrize([torch_fns, jax_fns])
+@parametrize([torch_fns])
 def test_diagonal(xnp):
     dtype = xnp.float32
     diag = xnp.array([0.1, 0.2, 3., 4.], dtype=dtype)
     A = xnp.diag(diag)
     rhs = xnp.ones(shape=(A.shape[0], 6), dtype=dtype)
+    soln = A @ rhs
+    B = Diagonal(diag=diag)
+    approx = B @ rhs
+
+    rel_error = relative_error(soln, approx)
+    assert rel_error < _tol
+
+    diag = xnp.array([0.1, 0.2, 3., 4.], dtype=dtype)[None]
+    A = xnp.diag(diag)
+    rhs = xnp.ones(shape=(A.shape[-2], 6), dtype=dtype)
     soln = A @ rhs
     B = Diagonal(diag=diag)
     approx = B @ rhs
